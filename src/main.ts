@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import apiRoutes from "./api/routes";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,9 +16,16 @@ app.get("/goal", async (req: Request, res: Response) => {
 
 app.use("/api", apiRoutes);
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).send('Something went wrong');
+app.use((error: Error, __req: Request, res: Response) => {
+  console.log((error as AxiosError).response?.status);
+  console.log((error as AxiosError).response?.statusText);
+
+  if ((error as AxiosError).message) {
+    return res
+      .status((error as AxiosError).status || 500)
+      .json({ message: (error as AxiosError).message });
+  }
+  res.status(500).json({ message: "Something went wrong", error });
 });
 
 app.listen(port, () => {
