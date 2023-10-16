@@ -1,10 +1,10 @@
 import { Router } from "express";
-import polyanetsRouter from "./polyanets";
-import restartMegaverseRouter from "./megaverseRestarter";
+import firstPhase from "./firstPhase";
+import secondPahase from "./secondPhase";
 
 const router = Router();
 
-router.use("/polyanets", polyanetsRouter);
-router.use("/restart-megaverse", restartMegaverseRouter);
+router.use("/first-phase", firstPhase);
+router.use("/second-phase", secondPahase);
 
 export default router;
