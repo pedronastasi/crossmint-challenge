@@ -1,5 +1,5 @@
-import { MegaverseClient } from "./MegaverseClient";
-import { Content, GoalElement } from "./types";
+import { MegaverseClient } from "../MegaverseClient";
+import { Content, GoalElement } from "../types";
 
 export class MegaVerseBuilder {
   private megaverseClient: MegaverseClient;
@@ -21,7 +21,7 @@ export class MegaVerseBuilder {
   }
 
   async restartMegaverse() {
-    let content = await this.megaverseClient.getCandidateMap();
+    let content = await this.megaverseClient.getContentCandidateMap();
     const isEmpty = await this.checkIfCandidateMapIsEmpty(content);
     if (isEmpty) {
       console.log("Megaverse is empty");
@@ -55,9 +55,10 @@ export class MegaVerseBuilder {
         return await Promise.all(
           row.map((colum, columIndex) => {
             if (colum !== null) {
-              return this.megaverseClient.deletePolyanets({
+              return this.megaverseClient.deleteAstralObject({
                 row: rowIndex,
                 column: columIndex,
+                type: colum.type,
               });
             }
           })
@@ -68,7 +69,7 @@ export class MegaVerseBuilder {
 
   private async checkIfCandidateMapMatchesGoalMap(goal: GoalElement[][]) {
     console.log("checking if candidate map matches goal map");
-    const candidateMap = await this.megaverseClient.getCandidateMap();
+    const candidateMap = await this.megaverseClient.getContentCandidateMap();
 
     const isMatch = goal.every((row, rowIndex) => {
       return row.every((colum, columIndex) => {
