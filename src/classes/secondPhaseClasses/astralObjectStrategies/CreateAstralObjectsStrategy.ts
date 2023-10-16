@@ -1,7 +1,7 @@
 import { ComethFactory } from "../astralFactories/ComethFactory";
 import { MegaverseClient } from "../../MegaverseClient";
-import { PolyanetFactory } from "../astralFactories/PolyanetsFactory";
-import { SoloonFactory } from "../astralFactories/SoloonsFactory";
+import { PolyanetFactory } from "../astralFactories/PolyanetFactory";
+import { SoloonFactory } from "../astralFactories/SoloonFactory";
 import {
   AstralObjectFactory,
   AstralObjectStrategy,
