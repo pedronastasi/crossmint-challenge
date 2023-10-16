@@ -127,23 +127,25 @@ export class CreateAstralObjectStrategy implements AstralObjectStrategy {
       return goalRow.every((goalColum, goalColumIndex) => {
         let isMatch = true;
 
-        Object.values(GoalElement).forEach((goalElement) => {
-          if (goalElement !== GoalElement.Space) {
-            if (contentCandidateMap[goalRowIndex][goalColumIndex] === null) {
-              isMatch = false;
-            }
-            if (
-              contentCandidateMap[goalRowIndex][goalColumIndex]?.type !==
-              goalMapToCandidateMap[goalColum]?.type
-            ) {
-              isMatch = false;
-            }
-          }
-        });
+        if (
+          goalColum !== GoalElement.Space &&
+          contentCandidateMap[goalRowIndex][goalColumIndex] === null
+        ) {
+          isMatch = false;
+        }
 
-        if (goalColum === GoalElement.Space) {
-          if (contentCandidateMap[goalRowIndex][goalColumIndex] !== null)
-            isMatch = false;
+        if (
+          contentCandidateMap[goalRowIndex][goalColumIndex]?.type !==
+          goalMapToCandidateMap[goalColum]?.type
+        ) {
+          isMatch = false;
+        }
+
+        if (
+          goalColum === GoalElement.Space &&
+          contentCandidateMap[goalRowIndex][goalColumIndex] !== null
+        ) {
+          isMatch = false;
         }
 
         return isMatch;
