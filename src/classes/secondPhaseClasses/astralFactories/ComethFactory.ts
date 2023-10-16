@@ -10,19 +10,15 @@ import {
 export class ComethFactory implements AstralObjectFactory {
   private megaverseClient: MegaverseClient;
   private goal: GoalElement[][];
-  private candidateMap: Map["content"];
 
-  constructor({
-    MegaverseClient,
-    goal,
-    candidateMap,
-  }: AstralObjectFactoryProps) {
+  constructor({ MegaverseClient, goal }: AstralObjectFactoryProps) {
     this.megaverseClient = MegaverseClient;
     this.goal = goal;
-    this.candidateMap = candidateMap;
   }
   async create() {
     console.log("creating comeths");
+    const candidateMap = await this.megaverseClient.getContentCandidateMap();
+
     await Promise.all(
       this.goal.map(async (row, rowIndex) => {
         return await Promise.all(
@@ -33,7 +29,7 @@ export class ComethFactory implements AstralObjectFactory {
               column === GoalElement.RightCometh ||
               column === GoalElement.UpCometh
             ) {
-              if (this.candidateMap[rowIndex][columIndex]?.type !== 2) {
+              if (candidateMap[rowIndex][columIndex]?.type !== 2) {
                 const direction = goalComethsToCandidateMap[column].direction;
 
                 return this.megaverseClient.createCometh({
