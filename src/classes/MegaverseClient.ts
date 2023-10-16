@@ -1,5 +1,12 @@
-import { AxiosInstance } from "axios";
-import { CandidateMap, Coordenates, GoalMap } from "./types";
+import { AxiosInstance, AxiosResponse } from "axios";
+import {
+  CandidateMap,
+  AstralObjectProps,
+  GoalMap,
+  SoloonProps,
+  ComethProps,
+  PolyanetProps,
+} from "./types";
 import { customAxiosInstance } from "../customAxiosInstance";
 
 export class MegaverseClient {
@@ -10,7 +17,7 @@ export class MegaverseClient {
     this.axiosInstance = customAxiosInstance;
   }
 
-  async createPolyanets({ row, column }: Coordenates) {
+  async createPolyanets({ row, column }: PolyanetProps) {
     console.log(`creating polyanet at row ${row} and column ${column}`);
     const response = await this.axiosInstance.post<{}>("/polyanets", {
       row,
@@ -21,20 +28,72 @@ export class MegaverseClient {
     return response;
   }
 
-  async deletePolyanets({ row, column }: Coordenates) {
-    console.log(`Deleting polyanet at row ${row} and column ${column}`);
-    const response = await this.axiosInstance.delete<{}>("/polyanets", {
-      data: {
-        row,
-        column,
-        candidateId: MegaverseClient.candidateId,
-      },
+  async createSoloons({ row, column, color }: SoloonProps) {
+    console.log(
+      `creating soloons at row ${row} and column ${column} with color ${color}`
+    );
+
+    const response = await this.axiosInstance.post<{}>("/soloons", {
+      row,
+      column,
+      color: color,
+      candidateId: MegaverseClient.candidateId,
     });
 
     return response;
   }
 
-  async getCandidateMap() {
+  async createCometh({ row, column, direction }: ComethProps) {
+    console.log(
+      `creating cometh at row ${row} and column ${column} with direction ${direction}`
+    );
+    const response = await this.axiosInstance.post<{}>("/comeths", {
+      row,
+      column,
+      direction,
+      candidateId: MegaverseClient.candidateId,
+    });
+
+    return response;
+  }
+
+  async deleteAstralObject({ row, column, type }: AstralObjectProps) {
+    console.log(`Deleting polyanet at row ${row} and column ${column}`);
+
+    switch (type) {
+      case 0:
+        return await this.axiosInstance.delete<{}>("/polyanets", {
+          data: {
+            row,
+            column,
+            candidateId: MegaverseClient.candidateId,
+          },
+        });
+
+      case 1:
+        return await this.axiosInstance.delete<{}>("/soloons", {
+          data: {
+            row,
+            column,
+            candidateId: MegaverseClient.candidateId,
+          },
+        });
+
+      case 2:
+        return await this.axiosInstance.delete<{}>("/comeths", {
+          data: {
+            row,
+            column,
+            candidateId: MegaverseClient.candidateId,
+          },
+        });
+
+      default:
+        throw new Error("Invalid type for astral object");
+    }
+  }
+
+  async getContentCandidateMap() {
     const response = await this.axiosInstance.get<CandidateMap>(
       `map/${MegaverseClient.candidateId}`
     );
