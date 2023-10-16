@@ -8,10 +8,10 @@ Create your own megaverse
    1.   `npm install`
    2.   `npm start`
 
-- To run first phase Challenge, please hit 
+- To run the first phase Challenge, please hit 
 
     POST `http://localhost:3000/first-phase`
 
-- To tun second phase challenge , please hit:
+- To tun the second phase challenge , please hit:
 
     POST `http://localhost:3000/second-phase`
